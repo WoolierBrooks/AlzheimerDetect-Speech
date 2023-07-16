@@ -46,7 +46,7 @@ for pasta in pastas:
                 np.set_printoptions(threshold=np.inf)  # Definir opções de exibição para imprimir o array completo
                 f.write(np.array2string(audio_control, separator=', '))
 
-    # Percorrer os arquivos em Dementia para carregar os dados de audio
+    # Percorrer os arquivos em Dementia para carregar os dados de audio 
     for arquivo_dementia in arquivos_dementia:
         if arquivo_dementia.endswith(".wav"):
             rota_dementia = os.path.join(dir_dementia, arquivo_dementia)
