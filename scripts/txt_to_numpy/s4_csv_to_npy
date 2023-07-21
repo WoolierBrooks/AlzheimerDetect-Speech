@@ -14,4 +14,4 @@ altura = data_npy_sem_nan.shape[0]
 print("Altura:", altura)
 
 # Salvar apenas os valores sem NaN no arquivo "hi.npy"
-np.save("hi.npy", data_npy_sem_nan)
+np.save("teste.npy", data_npy_sem_nan)
