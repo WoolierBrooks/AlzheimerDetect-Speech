@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 
-pasta = r"C:\Users\Lenovo\Desktop\IC\harmonized-toolkit-main\harmonized-toolkit-main\scripts"
+pasta = "<diretório da pasta>"
 
 # Inicialização das variáveis para armazenar o tamanho da menor e maior lista
 tamanho_menor_lista = float('inf')
