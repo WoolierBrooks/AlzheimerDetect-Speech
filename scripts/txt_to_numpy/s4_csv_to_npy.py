@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv(r"C:\Users\Lenovo\Desktop\IC\Pitt - Trimmed\Pitt\Control\sentence\txt_files\Concatenated\limpo_sem_spaces\332-0_limpo.txt", sep=' ', header=None)
+data = pd.read_csv("<diretório do arquivo .txt>", sep=' ', header=None)
 data_npy = data.values
 
 # Use a função numpy.isnan() para identificar as posições com NaN

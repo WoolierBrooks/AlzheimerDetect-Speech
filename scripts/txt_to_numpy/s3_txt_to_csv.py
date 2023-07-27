@@ -21,13 +21,13 @@ def limpar_arquivo_txt(caminho_arquivo):
     return caminho_arquivo_limpo
 
 # Caminho para a pasta que contém os arquivos de texto originais
-pasta_origem = r"C:\Users\Lenovo\Desktop\IC\Database Final\Control"
+pasta_origem = "<diretório de entrada>"
 
 # Listar todos os arquivos de texto na pasta
 arquivos_txt = [arquivo for arquivo in os.listdir(pasta_origem) if arquivo.endswith('.txt')]
 
 # Processar cada arquivo de texto e salvar os arquivos limpos em uma nova pasta
-pasta_destino = r"C:\Users\Lenovo\Desktop\IC\Database Final\Control\clean"
+pasta_destino = "<diretório de saída>"
 os.makedirs(pasta_destino, exist_ok=True)
 
 for arquivo_txt in arquivos_txt:
