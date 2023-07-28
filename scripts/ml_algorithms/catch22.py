@@ -1,11 +1,8 @@
 import os
 import numpy as np
-import pandas as pd
-from sklearn.preprocessing import normalize
-from sktime.classification.kernel_based import RocketClassifier
+from sktime.classification.feature_based import Catch22Classifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sktime.datatypes._panel._convert import from_2d_array_to_nested
 
 # Carregar dados de pacientes com diagnóstico de demência positivo
 folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (160)\cookie_d"
@@ -33,30 +30,18 @@ y = np.concatenate((np.ones(len(data_dementia)), np.zeros(len(data_control))), a
 # Dividir os dados em conjuntos de treinamento e prova
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Normalizar os dados de treinamento
-normalized_sequences = []
-for sequence in X:
-    sequence_array = np.array(sequence)
-    normalized_sequence = normalize(sequence_array[:, np.newaxis], axis=0).ravel()
-    normalized_sequences.append(normalized_sequence)
-X_normalized = np.array(normalized_sequences, dtype=object)
+# Criar o classificador Catch22 com um estimador RandomForest
+clf = Catch22Classifier(
+    estimator=RandomForestClassifier(n_estimators=5),
+    outlier_norm=True,
+)
 
-# Converter o array 2D en dados no formato nested (panel)
-X_train_nested = from_2d_array_to_nested(X_normalized)
+# Treinar o classificador
+clf.fit(X_train, y_train)
 
-# Crear el clasificador Rocket 
-clf = RocketClassifier()
+# Fazer previsões no conjunto de teste
+y_pred = clf.predict(X_test)
 
-# Entrenar el clasificador
-clf.fit(X_train_nested, y_train)
-
-# Normalizar los datos de prueba y convertir a formato nested
-X_test_norm = normalize(X_test, axis=1)
-X_test_nested = from_2d_array_to_nested(X_test_norm)
-
-# Hacer predicciones en el conjunto de prueba
-y_pred = clf.predict(X_test_nested)
-
-# Calcular la precisión del clasificador
+# Calcular a acurácia do classificador
 accuracy = accuracy_score(y_test, y_pred)
-print("Precisión:", accuracy)
+print("Acurácia:", accuracy)
