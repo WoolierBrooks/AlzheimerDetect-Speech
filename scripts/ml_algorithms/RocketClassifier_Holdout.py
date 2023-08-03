@@ -12,8 +12,7 @@ folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (160)\cookie_
 data_dementia = []
 for npy_file in os.listdir(folder_dementia):
     if npy_file.endswith(".npy"):
-        data = np.load(os.path.join(folder_dementia
-    , npy_file))
+        data = np.load(os.path.join(folder_dementia, npy_file))
         data_dementia.append(data)
 data_dementia = np.array(data_dementia, dtype=object)
 
@@ -33,23 +32,34 @@ y = np.concatenate((np.ones(len(data_dementia)), np.zeros(len(data_control))), a
 # Dividir os dados em conjuntos de treinamento e prova
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Normalizar os dados de treinamento
-normalized_sequences = []
-for sequence in X:
-    sequence_array = np.array(sequence)
-    normalized_sequence = normalize(sequence_array[:, np.newaxis], axis=0).ravel()
-    normalized_sequences.append(normalized_sequence)
-X_normalized = np.array(normalized_sequences, dtype=object)
+# Realizar padding e normalização ao mesmo tempo
+max_vector_size = max(len(vector) for vector in X)
+equalized_matrix = []
+
+for vector in X:
+    # Passo 1: Normalizar o vetor
+    normalized_vector = normalize(vector[:, np.newaxis], axis=0).ravel()
+    
+    # Passo 2: Preencher os vetores menores com valores padrão (zero) até atingirem o tamanho máximo.
+    diff = max_vector_size - len(normalized_vector)
+    equalized_vector = np.concatenate((normalized_vector, np.zeros(diff)))
+    equalized_matrix.append(equalized_vector)
+
+# Resultado como um array 2D
+X_normalized = np.array(equalized_matrix)
 
 # Converter o array 2D en dados no formato nested (panel)
 X_train_nested = from_2d_array_to_nested(X_normalized)
 
+# Ajustar os rótulos `y_train` para ter o mesmo tamanho que `X_train_nested`
+y_train_adjusted = y_train[:X_train_nested.shape[0]]    
+
 # Crear el clasificador Rocket 
 clf = RocketClassifier()
-
+print(1)
 # Entrenar el clasificador
-clf.fit(X_train_nested, y_train)
-
+clf.fit(X_train_nested, y_train_adjusted)
+print(2)
 # Normalizar los datos de prueba y convertir a formato nested
 X_test_norm = normalize(X_test, axis=1)
 X_test_nested = from_2d_array_to_nested(X_test_norm)
