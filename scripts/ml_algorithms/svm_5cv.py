@@ -2,11 +2,9 @@ import os
 import numpy as np
 from tslearn.utils import to_time_series_dataset
 from tslearn.svm import TimeSeriesSVC
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-#import warnings
-#warnings.filterwarnings("ignore", category=RuntimeWarning)
-
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+print("Carregando os dados")
 # Carregar dados de pacientes com diagnóstico de demência positivo
 folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (1)\cookie_d"
 data_dementia = []
@@ -16,7 +14,7 @@ for npy_file in os.listdir(folder_dementia):
         data_dementia.append(data)
 data_dementia = np.array(data_dementia, dtype=object)
 
-# Carregar dados de pacientes com diagnóstico de demência control (controle)
+# Carregar dados de pacientes con diagnóstico de demência control (controle)
 folder_control = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (1)\cookie_c/"
 data_control = []
 for npy_file in os.listdir(folder_control):
@@ -24,108 +22,44 @@ for npy_file in os.listdir(folder_control):
         data = np.load(os.path.join(folder_control, npy_file))
         data_control.append(data)
 data_control = np.array(data_control, dtype=object)
-print("Terminei de carregar")
+
 # Combinar e etiquetar os dados
-X_train = np.concatenate((data_dementia, data_control), axis=0)
-y_train = np.concatenate((np.ones(len(data_dementia)), np.zeros(len(data_control))), axis=0)
+X = np.concatenate((data_dementia, data_control), axis=0)
+y = np.concatenate((np.ones(len(data_dementia)), np.zeros(len(data_control))), axis=0)
 
 # Converter para o formato correto de séries temporais
-X_train = to_time_series_dataset(X_train)
+X = to_time_series_dataset(X)
 
-# Verificar se há valores NaN nos dados e substituir por zero
-X_train = np.nan_to_num(X_train)
-
-# Remover amostras com valores NaN do conjunto de treinamento
-valid_samples_mask = ~np.isnan(X_train).any(axis=(1, 2))
-X_train = X_train[valid_samples_mask]
-y_train = y_train[valid_samples_mask]
-
-print("Vou criar o modelo")
 # Criar o modelo SVM
 clf = TimeSeriesSVC(C=1.0, kernel="gak")
-print("Inicio do 5cv")
-# 5-fold cross-validation
-cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-accuracies = []
-precisions = []
-recalls = []
-f1_scores = []
-confusion_matrices = []
 
-# Counter to keep track of the current fold
-fold_counter = 1
+# Definir as métricas a serem calculadas
+scoring_metrics = ["accuracy", "precision", "recall", "f1", "roc_auc"]
+print("Iniciando a validação cruzada")
+# Realizar a validação cruzada com 5 folds para cada métrica
+for metric in scoring_metrics:
+    scores = cross_val_score(clf, X, y, cv=5, scoring=metric)
+    print(f"{metric.capitalize()} Scores: {scores}")
+    print(f"Mean {metric.capitalize()}: {scores.mean()}")
+    print(f"Standard Deviation {metric.capitalize()}: {scores.std()}")
 
-for train_index, test_index in cv.split(X_train, y_train):
-    X_train_fold, X_test_fold = X_train[train_index], X_train[test_index]
-    y_train_fold, y_test_fold = y_train[train_index], y_train[test_index]
+#@ 1
+#Accuracy Scores: [0.55454545 0.62727273 0.54545455 0.48181818 0.52293578]
+#Mean Accuracy: 0.5464053377814846
+#Standard Deviation Accuracy: 0.04760046440237219
 
-    # Verificar se há valores NaN nos dados e substituir por zero
-    X_train_fold = np.nan_to_num(X_train_fold)
-    X_test_fold = np.nan_to_num(X_test_fold)  # Tratar o conjunto de teste
+#Precision Scores: [0.57647059 0.64705882 0.56790123 0.52941176 0.56521739]
+#Mean Precision: 0.5772119604685674
+#Standard Deviation Precision: 0.038456603941097595
 
-    # Verificar se ainda existem valores NaN após substituição por zero
-    print("Contém NaN no conjunto de treinamento:", np.isnan(X_train_fold).any())
-    print("Contém NaN no conjunto de teste:", np.isnan(X_test_fold).any())
-    print("Contém NaN no conjunto de treinamento:", np.isnan(X_train).any())
-    print("Contém NaN no conjunto de treinamento:", np.isnan(y_train_fold).any())
-    print("Contém NaN no conjunto de treinamento:", np.isnan(y_test_fold).any())
-    print("Contém NaN no conjunto de treinamento:", np.isnan(y_train).any())
+#Recall Scores: [0.79032258 0.72131148 0.75409836 0.59016393 0.63934426]
+#Mean Recall: 0.6990481226864093
+#Standard Deviation Recall: 0.07386139675004359
 
-    print(f"Fold {fold_counter} complete\n")
-    fold_counter += 1
+#F1 Scores: [0.66666667 0.68217054 0.64788732 0.55813953 0.6       ]
+#Mean F1: 0.6309728136259418
+#Standard Deviation F1: 0.04570636921958017
 
-    print(X_train_fold)
-    print("#######################################################################################################################")
-    print(y_train_fold)
-    # Treinar o modelo SVM com o fold atual
-    clf.fit(X_train_fold, y_train_fold)
-    print("agora foi")
-    # Fazer a previsão com o modelo treinado
-    y_pred_fold = clf.predict(X_test_fold)
-
-    # Calcular as métricas do fold atual e armazenar
-    accuracy_fold = accuracy_score(y_test_fold, y_pred_fold)
-    precision_fold = precision_score(y_test_fold, y_pred_fold, zero_division=1)
-    recall_fold = recall_score(y_test_fold, y_pred_fold)
-    f1_score_fold = f1_score(y_test_fold, y_pred_fold)
-    confusion_matrix_fold = confusion_matrix(y_test_fold, y_pred_fold)
-
-    accuracies.append(accuracy_fold)
-    precisions.append(precision_fold)
-    recalls.append(recall_fold)
-    f1_scores.append(f1_score_fold)
-    confusion_matrices.append(confusion_matrix_fold)
-
-print("Fazendo estatísticas")
-# Calcular a média e desvio padrão das métricas dos folds
-mean_accuracy = np.mean(accuracies)
-std_accuracy = np.std(accuracies)
-
-mean_precision = np.mean(precisions)
-std_precision = np.std(precisions)
-
-mean_recall = np.mean(recalls)
-std_recall = np.std(recalls)
-
-mean_f1_score = np.mean(f1_scores)
-std_f1_score = np.std(f1_scores)
-
-mean_confusion_matrix = np.mean(confusion_matrices, axis=0)
-std_confusion_matrix = np.std(confusion_matrices, axis=0)
-
-print("Acurácia média:", mean_accuracy)
-print("Desvio padrão da acurácia:", std_accuracy)
-
-print("Precisão média:", mean_precision)
-print("Desvio padrão da precisão:", std_precision)
-
-print("Recall médio:", mean_recall)
-print("Desvio padrão do recall:", std_recall)
-
-print("F1-score médio:", mean_f1_score)
-print("Desvio padrão do F1-score:", std_f1_score)
-
-print("Matriz de Confusão média:")
-print(mean_confusion_matrix)
-print("Desvio padrão da matriz de confusão:")
-print(std_confusion_matrix)
+#Roc_auc Scores: [0.56922043 0.66008699 0.55035129 0.43860823 0.53756831]
+#Mean Roc_auc: 0.5511670479931793
+#Standard Deviation Roc_auc: 0.070773661955492
