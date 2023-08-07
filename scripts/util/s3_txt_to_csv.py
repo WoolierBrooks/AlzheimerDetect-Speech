@@ -9,7 +9,7 @@ def limpar_arquivo_txt(caminho_arquivo):
     # Remover colchetes, espaços em branco e quebras de linha indesejados
     dados_limpos = []
     for linha in linhas:
-        linha_limpa = linha.replace('[', '').replace(']', '').replace('\n', ' ').replace (',', '')#.replace(' ', '').rstrip(',')
+        linha_limpa = linha.replace('[', '').replace(']', '').replace('\n', ' ').replace (',', '')
         dados_limpos.append(linha_limpa)
 
     # Salvar os dados limpos em um novo arquivo
