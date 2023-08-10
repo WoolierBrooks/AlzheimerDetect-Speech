@@ -42,4 +42,3 @@ for metric in scoring_metrics:
     print(f"{metric.capitalize()} Scores: {scores}")
     print(f"Mean {metric.capitalize()}: {scores.mean()}")
     print(f"Standard Deviation {metric.capitalize()}: {scores.std()}")
-
