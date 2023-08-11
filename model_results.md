@@ -1,15 +1,15 @@
 ### KNeighborsTimeSeriesClassifier
 @1 Hz n_neighbors=2  
 Accuracy Scores: [0.5        0.52727273 0.44545455 0.5        0.6146789 ]  
-Mean Accuracy: 0.5174812343619684
+Mean Accuracy: 0.5174812343619684  
 Standard Deviation Accuracy: 0.05539366459291622
 
-Precision Scores: [0.56862745 0.57377049 0.5        0.55172414 0.6557377 ]
-Mean Precision: 0.5699719571265476
+Precision Scores: [0.56862745 0.57377049 0.5        0.55172414 0.6557377 ]  
+Mean Precision: 0.5699719571265476  
 Standard Deviation Precision: 0.05020170862871416
 
-Recall Scores: [0.46774194 0.57377049 0.42622951 0.52459016 0.6557377 ]
-Mean Recall: 0.529613960867266
+Recall Scores: [0.46774194 0.57377049 0.42622951 0.52459016 0.6557377 ]  
+Mean Recall: 0.529613960867266  
 Standard Deviation Recall: 0.0804968684513135
 
 F1 Scores: [0.51327434 0.57377049 0.46017699 0.53781513 0.6557377 ]
