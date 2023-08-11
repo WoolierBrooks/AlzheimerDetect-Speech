@@ -1,5 +1,5 @@
-### TimeSeriesSVC
-@1 Hz
+### TimeSeriesSVC  
+@1 Hz  
 Accuracy Scores: [0.55454545 0.62727273 0.54545455 0.48181818 0.52293578]  
 Mean Accuracy: 0.5464053377814846  
 Standard Deviation Accuracy: 0.04760046440237219  
