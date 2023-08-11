@@ -38,7 +38,7 @@ scoring_metrics = ["accuracy", "precision", "recall", "f1", "roc_auc"]
 
 # Loop sobre as métricas
 for metric in scoring_metrics:
-    scores = cross_val_score(KNeighborsTimeSeriesClassifier(n_neighbors=5), X, y, cv=cv, scoring=metric)
+    scores = cross_val_score(KNeighborsTimeSeriesClassifier(n_neighbors=6), X, y, cv=cv, scoring=metric)
     print(f"{metric.capitalize()} Scores: {scores}")
     print(f"Mean {metric.capitalize()}: {scores.mean()}")
     print(f"Standard Deviation {metric.capitalize()}: {scores.std()}")
