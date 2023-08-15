@@ -6,7 +6,7 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # Carregar dados de pacientes com diagnóstico de demência positivo
-folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16)\cookie_d"
+folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_287)\cookie_d"
 data_dementia = []
 for npy_file in os.listdir(folder_dementia):
     if npy_file.endswith(".npy"):
@@ -15,7 +15,7 @@ for npy_file in os.listdir(folder_dementia):
 data_dementia = np.array(data_dementia, dtype=object)
 
 # Carregar dados de pacientes con diagnóstico de demência control (controle)
-folder_control = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16)\cookie_c/"
+folder_control = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_287)\cookie_c/"
 data_control = []
 for npy_file in os.listdir(folder_control):
     if npy_file.endswith(".npy"):
@@ -38,7 +38,7 @@ scoring_metrics = ["accuracy", "precision", "recall", "f1", "roc_auc"]
 
 # Loop sobre as métricas
 for metric in scoring_metrics:
-    scores = cross_val_score(KNeighborsTimeSeriesClassifier(n_neighbors=6), X, y, cv=cv, scoring=metric)
+    scores = cross_val_score(KNeighborsTimeSeriesClassifier(n_neighbors=20), X, y, cv=cv, scoring=metric)
     print(f"{metric.capitalize()} Scores: {scores}")
     print(f"Mean {metric.capitalize()}: {scores.mean()}")
     print(f"Standard Deviation {metric.capitalize()}: {scores.std()}")
