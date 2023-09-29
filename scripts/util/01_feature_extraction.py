@@ -14,7 +14,7 @@ def feature_extraction(file_path):
     return mfcc
 
 features = {}
-directory = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16000_0)\trimmed_audio\cookie_d\combined_audio"
+directory = "<diretório da pasta>"
 
 # Criar um DataFrame vazio
 df = pd.DataFrame()
