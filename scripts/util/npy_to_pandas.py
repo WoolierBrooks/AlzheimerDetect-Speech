@@ -2,8 +2,8 @@ import os
 import numpy as np
 import pandas as pd
 
-negative_folder = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16)\cookie_c"
-positive_folder = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16)\cookie_d"
+negative_folder = r'C:\caminho\para\sua\pasta\Control'
+positive_folder = r'C:\caminho\para\sua\pasta\Dementia'
 
 data = []
 labels = []  # Para almacenar si es positivo o negativo

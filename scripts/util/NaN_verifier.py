@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-folder_path = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16)\cookie_d"
+folder_path = r'C:\caminho\para\sua\pasta'
 
 def check_for_nan(file_path):
     data = np.load(file_path)

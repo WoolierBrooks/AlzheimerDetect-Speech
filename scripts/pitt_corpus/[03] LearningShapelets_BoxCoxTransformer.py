@@ -1,48 +1,47 @@
-import os
-import numpy as np
-import tensorflow as tf
-import matplotlib.pyplot as plt
+# Carregar as bibliotecas necessárias
+from sktime.transformations.series.boxcox import BoxCoxTransformer
 from sklearn.metrics import accuracy_score
 from tslearn.shapelets import LearningShapelets, grabocka_params_to_shapelet_size_dict
 from tslearn.utils import ts_size
-from sktime.transformations.panel.pca import PCATransformer
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
-# Carregar seus dados
-folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_4296)\cookie_d"
-folder_control = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_4296)\cookie_c/"
+# Criar uma instância do BoxCoxTransformer
+boxcox_transformer = BoxCoxTransformer()
 
-data_dementia = []
+# Caminhos das pastas com os dados
+folder_dementia = "<diretório da pasta>"
+folder_control = "<diretório da pasta>"
+
+# Lista para armazenar os dados transformados
+transformed_data_dementia = []
+transformed_data_control = []
+
+# Carregar e aplicar a transformação Box-Cox aos dados de demência
 for npy_file in os.listdir(folder_dementia):
     if npy_file.endswith(".npy"):
         data = np.load(os.path.join(folder_dementia, npy_file))
-        data_dementia.append(data)
+        transformed_data = boxcox_transformer.fit_transform(data)
+        transformed_data_dementia.append(transformed_data)
 
-data_control = []
+# Carregar e aplicar a transformação Box-Cox aos dados de controle
 for npy_file in os.listdir(folder_control):
     if npy_file.endswith(".npy"):
         data = np.load(os.path.join(folder_control, npy_file))
-        data_control.append(data)
+        transformed_data = boxcox_transformer.fit_transform(data)
+        transformed_data_control.append(transformed_data)
 
-X = np.concatenate((data_dementia, data_control), axis=0)
-print(len(data_dementia), len(data_control))
-y = np.concatenate((np.ones(len(data_dementia)), np.zeros(len(data_control))), axis=0)
-
-# Crie uma instância da classe
-pca_transformer = PCATransformer(n_components=2) #Apresenta erro nos números, já seja na divisão ou informando de número
-#muito alto
+# transformed_data_dementia e transformed_data_control contêm as séries de tempo transformadas
+X = np.concatenate((transformed_data_dementia, transformed_data_control), axis=0)
+print(len(transformed_data_dementia), len(transformed_data_control))
 print(X.shape)
-print(y.shape)
-# Ajuste o modelo aos dados
-pca_transformer.fit(X)
-
-# Transforme os dados
-X_pca = pca_transformer.transform(X)
-
-# Opcional: Inverta a transformação
-X_original = pca_transformer.inverse_transform(X_pca)
+print(X)
+y = np.concatenate((np.ones(len(transformed_data_dementia)), np.zeros(len(transformed_data_control))), axis=0)
 
 # Get statistics of the dataset
-n_ts, ts_sz = X_pca.shape[:2]
+n_ts, ts_sz = X.shape[:2]
 n_classes = len(set(y))
 
 # Set the number of shapelets per size as done in the original paper
@@ -61,10 +60,10 @@ shp_clf = LearningShapelets(n_shapelets_per_size=shapelet_sizes,
                             max_iter=300,
                             random_state=1,
                             verbose=0)
-shp_clf.fit(X_pca, y)
+shp_clf.fit(X, y)
 
 # Make predictions and calculate accuracy score
-pred_labels = shp_clf.predict(X_pca)
+pred_labels = shp_clf.predict(X)
 print("Correct classification rate:", accuracy_score(y, pred_labels))
 
 # Plot the different discovered shapelets
@@ -86,6 +85,3 @@ plt.plot(np.arange(1, shp_clf.n_iter_ + 1), shp_clf.history_["loss"])
 plt.title("Evolution of cross-entropy loss during training")
 plt.xlabel("Epochs")
 plt.show()
-
-# Resultados
-# 

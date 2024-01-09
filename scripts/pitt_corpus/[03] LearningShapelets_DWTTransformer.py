@@ -8,8 +8,8 @@ from tslearn.utils import ts_size
 from sktime.transformations.panel.dwt import DWTTransformer
 
 # Carregar seus dados
-folder_dementia = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_4296)\cookie_d"
-folder_control = r"C:\Users\Lenovo\Desktop\IC\[99] Database Final (16_4296)\cookie_c/"
+folder_dementia = "<diretório da pasta>"
+folder_control = "<diretório da pasta>"
 
 data_dementia = []
 for npy_file in os.listdir(folder_dementia):
