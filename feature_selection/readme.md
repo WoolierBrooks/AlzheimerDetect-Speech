@@ -5,7 +5,7 @@ This folder contains scripts and tools for **feature selection** applied to the 
 ### Overview
 Feature selection is a crucial step in machine learning, particularly in high-dimensional datasets like those derived from speech data. By identifying and retaining the most relevant features, the models' performance can be improved while reducing complexity and computational requirements. This folder provides implementations of various feature selection techniques, which were evaluated as part of the study titled *"PREDIÇÃO DA DEMÊNCIA POR MEIO DA FALA USANDO ALGORITMOS DE SELEÇÃO DE ATRIBUTOS E APRENDIZADO DE MÁQUINA"*.
 
-This study was later published in the **5th Congresso de Engenharias e Ciências Aplicadas das Três Fronteiras**. You can access the proceedings of the conference [here](insert-link-here) for those interested in reading the full paper.
+This study was later published in the **5th Congresso de Engenharias e Ciências Aplicadas das Três Fronteiras**. You can access the proceedings of the conference [here](https://drive.google.com/file/d/1pueWZ_Hv3mV-kSPWV2Wf0Mb5Er68fGL1/view) for those interested in reading the full paper.
 
 ### Contents
 The folder contains the following files:
