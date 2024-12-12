@@ -9,11 +9,14 @@ This study was later published in the **5th Congresso de Engenharias e Ciências
 
 ### Contents
 The folder contains the following files:
-- **`method_1.py`**: Implements Univariate Feature Selection (UFS) to evaluate the significance of individual features.
-- **`method_2.py`**: Implements Recursive Feature Elimination (RFE) to iteratively remove features and determine the most important ones.
-- **`method_3.py`**: Implements SelectFromModel (SFM), which selects features based on model importance (e.g., using random forests).
-- **`method_4.py`**: Implements Sequential Feature Selection (SFS), a greedy algorithm for selecting subsets of features.
-- **`example_usage.py`**: A Python script that demonstrates how to load the data, apply feature selection, and use the selected features with classification models.
+
+- **`01_data_preprocessing.py`**: Handles data loading, preprocessing, and feature extraction. 
+- **`02_feature_selection.py`**: Implements the feature selection methods.
+- **`03_model_training.py`**: Contains code for training different machine learning models.
+- **`04_main.py`**: The entry point for running the entire pipeline, combining preprocessing, feature selection, and model training.
+- **`05_utils.py`**: Includes helper functions for data manipulation, evaluation metrics, and visualization.
+- **`06_notebook.ipynb`**: Jupyter notebook for interactive exploration, experimentation, and visualization.
+- **`07_adress_20_db_*`**: Dataset files, including training and testing sets for different feature sets (e.g., **eGeMAPS**, **ComParE**, **emobase**).
 
 ### Feature Selection Methods
 - **Univariate Feature Selection (UFS)**: This method selects features based on statistical tests. It evaluates the relationship between each feature and the target variable, selecting the most relevant features based on the scores.
