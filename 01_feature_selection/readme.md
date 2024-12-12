@@ -16,7 +16,13 @@ The folder contains the following files:
 - **`04_main.py`**: The entry point for running the entire pipeline, combining preprocessing, feature selection, and model training.
 - **`05_utils.py`**: Includes helper functions for data manipulation, evaluation metrics, and visualization.
 - **`06_notebook.ipynb`**: Jupyter notebook for interactive exploration, experimentation, and visualization.
-- **`07_adress_20_db_*`**: Dataset files, including training and testing sets for different feature sets (e.g., **eGeMAPS**, **ComParE**, **emobase**).
+- **`07_results_visualization`**: Jupyter notebook dedicated to generating all graphs and visualizations featured in the paper. This includes accuracy comparisons, scatter plots, regression analyses, and spectrograms of audio signals. 
+- **`08_adress_20_db_*`**: Dataset files, including training and testing sets for different feature sets (e.g., **eGeMAPS**, **ComParE**, **emobase**).
+- **`figures/`**: This folder contains the visual assets featured in the paper, including:  
+  - **`Fig. 1.png`**, **`Fig. 2.png`**, and **`Fig. 3.png`**: The final figures presented in the manuscript.  
+  - Visualizations of audio features prior to feature selection (**`audio_visualization_before_selection_*.png`**).  
+  - Comparative boxplots of feature sets (**`boxplot_*`**).  
+  - Performance graphs comparing training and test results (**`train_v_test_*.png`**).  
 
 ### Feature Selection Methods
 - **Univariate Feature Selection (UFS)**: This method selects features based on statistical tests. It evaluates the relationship between each feature and the target variable, selecting the most relevant features based on the scores.
